@@ -14,17 +14,38 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int get_file_size(FILE *file);
 int split_file(FILE *file, int megabytes); // This function receives a file to be split and the megabytes that each segment will have
 
 int main(void) {
-    // FILE *file = fopen("testfile.txt", "r"); // Opens the "textfile.txt" in read-only mode.
+    FILE *file = fopen("testfile.txt", "r"); // Opens the "textfile.txt" in read-only mode.
     // printf("\"textfile.txt\" size in bytes is %d.\n", get_file_size(file));
+
+    split_file(file, 2);
 }
 
 int split_file(FILE *file, int megabytes) {
 
+    long segments_size = megabytes * pow(1024, 2);      // Size of each segment in bytes
+    long file_size = get_file_size(file);               // File size in bytes
+    
+    int number_of_segments = file_size / segments_size; // Number of segments to be created
+
+    if (file_size < segments_size) return -1;           // If the file is smaller than the segments size, return
+
+    for (int i = 1; i <= number_of_segments; i++) {
+        char num[3];
+        char segment_name[11] = "split_";
+        sprintf(num, "%d", i);                      // Stores the "i" integer into the "num" string
+        strcat(segment_name, num);                      // Concatenates the "segment_name" with "num"
+
+        printf("%s\n", segment_name);
+
+        FILE *file = fopen(segment_name, "w");          // Creates the segment file number N, being N i
+
+    }
 }
 
 int get_file_size(FILE *file) {
